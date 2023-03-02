@@ -1,0 +1,49 @@
+' Option 2
+@startuml
+!pragma teoz true
+autonumber
+
+    box "Consumer\n"
+    participant "Consumer" as con
+
+    participant "CommonAPI" as com1
+    end box
+    'participant "someip CommonAPI" as scom
+
+    participant "vsomeip" as vsome
+    
+    box "Provider\n"
+    participant "CommonAPI" as com2
+    participant "Provider" as pro
+    end box 
+
+    con -> com1: Runtime()
+    con -> com1: buildProxy()
+    com1 -> com1: createProxy()
+    con -> com1: registerProxyCreateMethod()
+
+    com1 -> vsome: register_message_handler()
+
+    pro -> com2: Runtime()
+    pro -> com2: registerStub()
+    pro -> com2: registerStubAdapterCreateMethod()
+    pro -> com2: registerStubHelper()
+    com2 -> com2: setStubMessageHandler()
+    pro -> com2: registerStubAdapter()
+    pro -> com2: register_message_handler()
+
+    'pro -> con: ON_AVAILABLE
+
+    con -> com1: foo()
+    com1 -> vsome: foo()
+    vsome -> com2: receive()
+    com2 -> com2: handleStubReceive()
+    com2 -> com2: handleMessage()
+
+    pro -> vsome: reply()
+    vsome -> com1: receive()
+    com1 -> com1: handleProxyReceive()
+    com1 -> com1: onMessageReply()
+    com1 -> con: reply()
+
+@enduml

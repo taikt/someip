@@ -1,0 +1,10 @@
+taikt/E03Methods$ ./../core-generator -sk fidl/E03Methods.fidl
+taikt/E03Methods$ ./../someip-generator fidl/E03Methods-SomeIP.fdepl
+
+mkdir build
+cd build
+cmake ..
+make
+
+./E03MethodsService
+./E03MethodsClient

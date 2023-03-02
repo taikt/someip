@@ -1,0 +1,10 @@
+taikt/E02Attributes$ ./../../../../someip-gen-tools/gen-tools/commonapi_someip_generator/commonapi-someip-generator-linux-x86_64 -sk fidl/E02Attributes.fidl
+taikt/E02Attributes$ ./../../../../someip-gen-tools/gen-tools/commonapi_someip_generator/commonapi-someip-generator-linux-x86_64 fidl/E02Attributes-SomeIP.fdepl
+
+mkdir build
+cd build
+cmake ..
+make
+
+./E02AttributesService
+./E02AttributesClient
