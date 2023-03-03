@@ -11,6 +11,10 @@
 
 #include <CommonAPI/CommonAPI.hpp>
 #include <v1/commonapi/examples/E03MethodsProxy.hpp>
+#include <sys/types.h>
+#include <unistd.h>
+#include <sys/syscall.h>
+
 
 using namespace v1_2::commonapi::examples;
 
@@ -18,6 +22,9 @@ void recv_cb(const CommonAPI::CallStatus& callStatus,
              const E03Methods::stdErrorTypeEnum& methodError,
              const int32_t& y1,
              const std::string& y2) {
+    pid_t x = syscall(__NR_gettid);
+    std::cout <<"thread id:" << x <<"\n";
+
     std::cout << "Result of asynchronous call of foo: " << std::endl;
     std::cout << "   callStatus: " << ((callStatus == CommonAPI::CallStatus::SUCCESS) ? "SUCCESS" : "NO_SUCCESS")
                     << std::endl;

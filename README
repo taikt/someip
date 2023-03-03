@@ -43,8 +43,11 @@ https://github.com/COVESA/capicxx-core-tools/releases
 donwload someip generator
 https://github.com/COVESA/capicxx-someip-tools/releases
 
-tai@tai:~/work/vsomeip/examples/taikt/hello_world_commonAPI$ ./../../../commonapi_core_generator/commonapi-core-generator-linux-x86_64 -sk fidl/E01HelloWorld.fidl
-tai@tai:~/work/vsomeip/examples/taikt/hello_world_commonAPI$ ./../../../commonapi_someip_generator/commonapi-someip-generator-linux-x86_64 fidl/E01HelloWorld-SomeIP.fdepl
+~/someip/core/sip/src/methods$ 
+./../../../../someip-gen-tools/gen-tools/commonapi_core_generator/commonapi-core-generator-linux-x86_64 -sk fidl/E03Methods.fidl
+
+~/someip/core/sip/src/methods$ 
+./../../../../someip-gen-tools/gen-tools/commonapi_someip_generator/commonapi-someip-generator-linux-x86_64 fidl/E03Methods-SomeIP.fdepl
 
 => src-gen: generated code 
 
@@ -76,7 +79,7 @@ b. If cannot connect service (proxy is not available)
 change ServiceID value in fdepl, re-gen code 
 i.e  E03Methods-SomeIP.fdepl
 SomeIpServiceID = 4661
-
+(only re-gen code, why?)
 
 5. Note
 -- Make document
@@ -86,12 +89,7 @@ cd build
 cmake ..
 make doxygen-doc
 
--- Gen code
-tai2.tran@LGEAVCCON18V:~/someip/core/vsomeip/examples/taikt$ 
-ln -s ./../../../../someip-gen-tools/gen-tools/commonapi_core_generator/commonapi-core-generator-linux-x86_64 core-generator
 
-tai2.tran@LGEAVCCON18V:~/someip/core/vsomeip/examples/taikt$ 
-ln -s ./../../../../someip-gen-tools/gen-tools/commonapi_someip_generator/commonapi-someip-generator-linux-x86_64 someip-generator
 
-tai2.tran@LGEAVCCON18V:~/someip/core/vsomeip/examples/taikt/E03Methods$ ./../core-generator -sk fidl/E03Methods.fidl
-tai2.tran@LGEAVCCON18V:~/someip/core/vsomeip/examples/taikt/E03Methods$ ./../someip-generator fidl/E03Methods-SomeIP.fdepl
+
+

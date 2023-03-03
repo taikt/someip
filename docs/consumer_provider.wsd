@@ -7,41 +7,82 @@ autonumber
     participant "Consumer" as con
 
     participant "CommonAPI" as com1
+    participant "someip" as vsome1
     end box
     'participant "someip CommonAPI" as scom
 
-    participant "vsomeip" as vsome
+    
+    participant "vsomeip(router)" as router
     
     box "Provider\n"
+    participant "someip" as vsome2
     participant "CommonAPI" as com2
     participant "Provider" as pro
+    
     end box 
 
     con -> com1: Runtime()
     con -> com1: buildProxy()
     com1 -> com1: createProxy()
+    com1 -> com1: requestService()
+    com1 -> vsome1: register_message_handler(&Connection::receive)
+    com1 -> com1: createProxyHelper()
     con -> com1: registerProxyCreateMethod()
 
-    com1 -> vsome: register_message_handler()
+    con -> com1: getProxyStatusEvent().subscribe()
+    com1 -> vsome1: registerAvailabilityHandler()
+
 
     pro -> com2: Runtime()
-    pro -> com2: registerStub()
+    pro -> com2: registerService()
+    com2 -> vsome2: register_message_handler(&Connection::&receive)
+    ' need to check this flow offer_service
+    com2 -> vsome2: offer_service()
+    vsome2 -> router: offer_service()
+    router -> vsome1: on_availability()
+    vsome1 -> com1: availability callback
+    com1 -> con: on availability
+    com2 -> com2: registerStub()
+    com2 -> com2: registerStubHelper()
+    com2 -> com2: registerStubAdapter()
+ 
+    
     pro -> com2: registerStubAdapterCreateMethod()
-    pro -> com2: registerStubHelper()
+    
     com2 -> com2: setStubMessageHandler()
-    pro -> com2: registerStubAdapter()
-    pro -> com2: register_message_handler()
+
+    
+   
 
     'pro -> con: ON_AVAILABLE
 
     con -> com1: foo()
-    com1 -> vsome: foo()
-    vsome -> com2: receive()
+    com1 -> vsome1: foo()
+    vsome1 -> router: foo()
+    router -> vsome2: on_message()
+    vsome2 -> vsome2: invoke_handler()
+    alt exist active dispatcher thread (not busy)
+    vsome2 -> vsome2: application_impl::dispatch()
+    else all thread busy, create new dispatcher thread (< max_dispatchers_)
+    vsome2 -> vsome2: application_impl::dispatch()
+    end
+    vsome2 -> com2: Connection::receive()
     com2 -> com2: handleStubReceive()
     com2 -> com2: handleMessage()
+    com2 -> com2: stubMessageHandler_()
+    com2 -> pro: foo()
 
-    pro -> vsome: reply()
-    vsome -> com1: receive()
+    pro -> com2: reply()
+    com2 -> vsome2: reply()
+    vsome2 -> router: reply()
+    router -> vsome1: on_message()
+    vsome1 -> vsome1: invoke_handler()
+    alt check active dispatcher thread (not busy)
+    vsome1 -> vsome1: application_impl::dispatch()
+    else all thread busy, create new dispatcher thread (< max_dispatchers_)
+    vsome1 -> vsome1: application_impl::dispatch()
+    end
+    vsome1 -> com1: Connection::receive()
     com1 -> com1: handleProxyReceive()
     com1 -> com1: onMessageReply()
     com1 -> con: reply()
