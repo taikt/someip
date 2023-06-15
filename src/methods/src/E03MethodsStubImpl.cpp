@@ -30,15 +30,16 @@ void E03MethodsStubImpl::foo(const std::shared_ptr<CommonAPI::ClientId> _client,
                 fooReply_t _reply) {
     pid_t x = syscall(__NR_gettid);
 
-    std::cout <<"thread id:" << x <<"\n";
+    std::cout <<"TID:" << x <<"\n";
 
     std::cout << "foo called, setting new values." << std::endl;
 
     E03Methods::stdErrorTypeEnum methodError = E03Methods::stdErrorTypeEnum::NO_FAULT;
 
     std::cout << "foo process in 3 sec before return" << std::endl;
-    std::this_thread::sleep_for(std::chrono::seconds(240));
+    std::this_thread::sleep_for(std::chrono::seconds(50));
 
+	std::cout <<"TID:" << x <<"\n";
     std::cout << "foo process done" << std::endl;
     int32_t y1 = 42;
     std::string y2 = "xyz";

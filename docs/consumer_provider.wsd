@@ -15,7 +15,12 @@ autonumber
     participant "vsomeip(router)" as router
     
     box "Provider\n"
-    participant "someip" as vsome2
+
+    box "someip lib\n"
+    participant "main thread" as vsome2
+    participant "dispatcher thread" as dis2
+    end box
+
     participant "CommonAPI" as com2
     participant "Provider" as pro
     
@@ -60,31 +65,139 @@ autonumber
     com1 -> vsome1: foo()
     vsome1 -> router: foo()
     router -> vsome2: on_message()
-    vsome2 -> vsome2: invoke_handler()
-    alt exist active dispatcher thread (not busy)
-    vsome2 -> vsome2: application_impl::dispatch()
-    else all thread busy, create new dispatcher thread (< max_dispatchers_)
-    vsome2 -> vsome2: application_impl::dispatch()
-    end
-    vsome2 -> com2: Connection::receive()
+    vsome2 -> vsome2: push to handlers queue
+    dis2 -> vsome2: get_next_handler()
+    dis2 -> vsome2: invoke_handler()
+    dis2 -> dis2: create timer (100ms)
+    dis2 -> dis2: handle handler
+    dis2 -> com2: Connection::receive()
+
     com2 -> com2: handleStubReceive()
     com2 -> com2: handleMessage()
     com2 -> com2: stubMessageHandler_()
     com2 -> pro: foo()
+
+    alt if foo return before timer expired
+    pro --> com2: 
+    com2 --> dis2:
+    dis2 -> dis2: cancel timer
+    else if timer expired and foo is not return yet
+    dis2 -> dis2: create new dispatcher thread (< max_threads)
+    dis2 -> dis2: print blocking call
+
+    end
 
     pro -> com2: reply()
     com2 -> vsome2: reply()
     vsome2 -> router: reply()
     router -> vsome1: on_message()
     vsome1 -> vsome1: invoke_handler()
-    alt check active dispatcher thread (not busy)
-    vsome1 -> vsome1: application_impl::dispatch()
-    else all thread busy, create new dispatcher thread (< max_dispatchers_)
-    vsome1 -> vsome1: application_impl::dispatch()
-    end
+    note over vsome1
+    same as provider side
+    end note
     vsome1 -> com1: Connection::receive()
     com1 -> com1: handleProxyReceive()
     com1 -> com1: onMessageReply()
     com1 -> con: reply()
+
+@enduml
+
+
+
+' provisioning issue
+
+' Option 2
+@startuml
+!pragma teoz true
+autonumber
+
+
+    participant "ProvisioningD" as con
+
+    
+    box "Nad Manager\n"
+
+    box "someip lib\n"
+    participant "main thread" as vsome2
+    participant "dispatcher thread" as dis2
+    end box
+
+    participant "Provisioning" as pro
+    end box 
+
+
+    participant "Nad Proxy" as proxy
+
+    loop
+    con -> vsome2: broadcast sections
+    end loop
+
+    vsome2 -> vsome2: push message to handlers queue
+    dis2 -> vsome2: get_next_handler()
+    dis2 -> vsome2: invoke_handler()
+    dis2 -> dis2: create timer (100ms)
+    dis2 -> dis2: handle handler
+    dis2 -> pro: send sections
+    pro -> proxy: send sections
+    alt if send_sections() return before timer expired
+    
+    proxy --> pro:
+    pro --> dis2: 
+    dis2 -> dis2: cancel timer
+    else if timer expired and send_sections() is not return yet
+    dis2 -> dis2: create new dispatcher thread (< max_threads)
+    dis2 -> dis2: print blocking call
+
+    end
+
+@enduml
+
+
+' Option 3
+@startuml
+!pragma teoz true
+autonumber
+
+
+    participant "ProvisioningD" as con
+
+    
+    box "Nad Manager\n"
+
+    box "someip lib\n"
+    participant "main thread" as vsome2
+    participant "dispatcher thread" as dis2
+    end box
+
+    participant "Provisioning" as pro
+    end box 
+
+    == startup Nad Manager ==
+    note over vsome2, pro
+    Nad Manager initialize sub modules (provisioning, coding, diagnostic..)
+    => very high work load
+    end note
+    loop
+    con -> vsome2: broadcast sections
+    end loop
+
+    vsome2 -> vsome2: push message to handlers queue
+    dis2 -> vsome2: get_next_handler()
+    dis2 -> vsome2: invoke_handler()
+    dis2 -> dis2: create timer (100ms)
+    dis2 -> dis2: handle handler
+    dis2 -> pro: send sections
+    note over pro
+    due to NadManage is hang, this call is delayed
+    end note
+    alt if send_sections() return before timer expired
+    
+    pro --> dis2: 
+    dis2 -> dis2: cancel timer
+    else if timer expired and send_sections() is not return yet
+    dis2 -> dis2: create new dispatcher thread (< max_threads)
+    dis2 -> dis2: print blocking call
+
+    end
 
 @enduml

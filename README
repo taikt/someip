@@ -52,12 +52,13 @@ https://github.com/COVESA/capicxx-someip-tools/releases
 => src-gen: generated code 
 
 2. write CMakeLists.txt
-Note: change proper directories
+Note: change pro_cliper directories
 set (COMMONAPI_DIR "/data001/tai2.tran/someip/core/capicxx-core-runtime")
 set (COMMONAPI_SOMEIP_DIR "/data001/tai2.tran/someip/core/capicxx-someip-runtime")
 set (VSOMEIP_DIR "/data001/tai2.tran/someip/core/vsomeip")
 
 3. build
+cd ~/someip/core/sip/src/methods
 mkdir build
 cd build
 cmake ..
@@ -66,8 +67,8 @@ make
 (can skip this step if libraries are installed in /usr/local/lib) (add to ~/.profile for default) 
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/data001/tai2.tran/vsomeip/build
 
-vsomeip/examples/hello_world_commonAPI/build$ ./HelloWorldService
-vsomeip/examples/hello_world_commonAPI/build$ ./HelloWorldClient
+~/someip/core/sip/src/methods/build$ ./E03MethodsService
+~/someip/core/sip/src/methods/build$ ./E03MethodsClient
 
 4. Debug
 a. error: Configuration module could not be loaded!
@@ -91,5 +92,27 @@ make doxygen-doc
 
 
 
+6. Someip internally
 
+- async call: push to queue
+sync call: process now
+Ref: watch_->pushQueue(msg_queue_entry);
+
+- asyncall mechanism
+Ref: asyncAnswers_
+
+how to set session id:
+application_impl::send(std::shared_ptr<message> _message)
+_message->set_session(get_session());
+
+application_impl::get_session()
+ if (0 == ++session_) 
+
+- create vsomeip application name
+
+Connection::Connection(const std::string &_name)
+      : dispatchSource_(NULL),
+        watch_(NULL),
+        connectionStatus_(state_type_e::ST_DEREGISTERED),
+        application_(vsomeip::runtime::get()->create_application(_name)),
 
