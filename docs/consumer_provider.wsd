@@ -50,7 +50,32 @@ autonumber
     com2 -> com2: registerStub()
     com2 -> com2: registerStubHelper()
     com2 -> com2: registerStubAdapter()
- 
+    
+    ' register stub dispatcher:
+    ' addStubDispatcher
+    
+    ' register Stub functor:
+    ' MethodWithReplyStubDispatcher
+
+    ' dispatch message to stub:
+    ' methodId = message.getMethodId();
+    ' map: methodId <--> subFuntor
+
+
+
+    '  std::function<bool(const Message&)> stubMessageHandler_;
+
+    ' _connection->setStubMessageHandler(
+    '        std::bind(&StubManager::handleMessage, this, std::placeholders::_1));
+    ' stubMessageHandler_ = &StubManager::handleMessage
+    '
+    ' Connection::receive(message) -> handleProxyReceive(_message) or handleStubReceive(message)
+    ' 
+    ' handleStubReceive(message) -> stubMessageHandler_(Message(_message));
+    ' handleMessage(message)
+    ' onInterfaceMessage(message) -> findDispatcherAndHandle() ->
+
+    ' dispatchMessage -> dispatchMessageHelper -> (_stub.get()->*stubFunctor_)
     
     pro -> com2: registerStubAdapterCreateMethod()
     
