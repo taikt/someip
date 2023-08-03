@@ -9,18 +9,29 @@
 #include <CommonAPI/CommonAPI.hpp>
 #include <v1/commonapi/examples/E03MethodsStubDefault.hpp>
 
+#include "Promise.h"
+#include "Dispatcher.h"
+#include "Message.h"
+#include "requestMsg.pb.h"
+#include "E03MethodsServiceHandler.h"
+
+class ResponseMsg;
+
 class E03MethodsStubImpl: public v1_2::commonapi::examples::E03MethodsStubDefault {
 
 public:
-    E03MethodsStubImpl();
+    E03MethodsStubImpl(std::shared_ptr<Dispatcher>& mExecutor_);
     virtual ~E03MethodsStubImpl();
     virtual void incCounter();
     virtual void foo(const std::shared_ptr<CommonAPI::ClientId> _client,
             int32_t _x1, std::string _x2,
             fooReply_t _reply);
+   Future<ResponseMsg> sendRequest(int32_t _x1, std::string _x2);
 
 private:
     int cnt;
+
+    std::shared_ptr<Dispatcher> m_Executor;
 };
 
 #endif // E03METHODSSTUBIMPL_HPP_

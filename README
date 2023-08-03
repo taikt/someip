@@ -16,6 +16,7 @@ git clone git@github.com:taikt/capicxx-core-runtime.git
 cd capicxx-core-runtime
 mkdir build
 cd build
+cmake ..
 make
 (optional: sudo make install)
 
@@ -25,6 +26,7 @@ git clone git@github.com:taikt/capicxx-someip-runtime.git
 cd capicxx-someip-runtime
 mkdir build
 cd build
+cmake ..
 make
 (optional: sudo make install)
 
@@ -33,6 +35,7 @@ git clone git@github.com:taikt/vsomeip.git
 cd vsomeip
 mkdir build
 cd build
+cmake ..
 make
 (optional: sudo make install)
 
@@ -50,6 +53,10 @@ https://github.com/COVESA/capicxx-someip-tools/releases
 ./../../../../someip-gen-tools/gen-tools/commonapi_someip_generator/commonapi-someip-generator-linux-x86_64 fidl/E03Methods-SomeIP.fdepl
 
 => src-gen: generated code 
+
+# gen protobuf
+cd protobuf
+protoc --cpp_out=./gen requestMsg.proto
 
 2. write CMakeLists.txt
 Note: change pro_cliper directories

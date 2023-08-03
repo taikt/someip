@@ -1,0 +1,9 @@
+syntax = "proto3";
+  
+package data;
+ 
+message requestMsg
+{
+  uint32 x1 = 1;
+  string x2 = 2;
+}
