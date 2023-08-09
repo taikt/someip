@@ -30,7 +30,8 @@ int main() {
     std::shared_ptr<Dispatcher> mExecutor = std::make_shared<Dispatcher>(myHandler_);
 
     std::shared_ptr<E03MethodsStubImpl> myService = std::make_shared<E03MethodsStubImpl>(mExecutor);
-
+    
+    //mExecutor->deliverTask([=]{std::cout<<"[taikt] hello main@@@@@@@@@@@@@@@@@@@@@@@@@\n";});
 
 	
 	DEBUG_MSG();
@@ -38,7 +39,9 @@ int main() {
         std::this_thread::sleep_for(std::chrono::milliseconds(100));
     }
 
-    std::cout << "Successfully Registered Service!" << std::endl;
+    std::cout << "ok, Successfully Registered Service!" << std::endl;
+
+    
 
     while (true) {
         //myService->incCounter(); // Change value of attribute, see stub implementation

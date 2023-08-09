@@ -14,8 +14,10 @@
 #include "Message.h"
 #include "requestMsg.pb.h"
 #include "E03MethodsServiceHandler.h"
+#include "E03MethodsServiceRequestManager.h"
 
 class ResponseMsg;
+class RequestManager;
 
 class E03MethodsStubImpl: public v1_2::commonapi::examples::E03MethodsStubDefault {
 
@@ -26,12 +28,11 @@ public:
     virtual void foo(const std::shared_ptr<CommonAPI::ClientId> _client,
             int32_t _x1, std::string _x2,
             fooReply_t _reply);
-   Future<ResponseMsg> sendRequest(int32_t _x1, std::string _x2);
-
 private:
     int cnt;
 
     std::shared_ptr<Dispatcher> m_Executor;
+    Promise<ResponseMsg> mytestpromise;
 };
 
 #endif // E03METHODSSTUBIMPL_HPP_

@@ -111,7 +111,7 @@ int main() {
     // allow timeout of async call as maximum 5 sec
     // if api return > 5 sec: call status is failure
     // if api return < 5 sec: call status is success
-    CommonAPI::CallInfo info(5000);    
+    CommonAPI::CallInfo info(20000);    
     myProxy->fooAsync(inX1, inX2, recv_cb, &info);
     std::cout << "wait foo return..." << std::endl;
 

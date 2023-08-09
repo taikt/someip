@@ -5,6 +5,7 @@ set (COMMONAPI_DIR "/data001/tai2.tran/someip_stack/capicxx-core-runtime")
 set (COMMONAPI_SOMEIP_DIR "/data001/tai2.tran/someip_stack/capicxx-someip-runtime")
 set (VSOMEIP_DIR "/data001/tai2.tran/someip_stack/vsomeip")
 set (ASYNC_TIGER_DIR "/data001/tai2.tran/codefun/cpp/pattern/dispatcher_v2")
+
 set (LOCAL_LIB_DIR "/usr/local/lib")
 
 
@@ -44,7 +45,7 @@ FILE(GLOB PRJ_STUB_GEN_SRCS ${PRJ_SRC_GEN_COMMONAPI_PATH}/*Stub*.cpp ${PRJ_SRC_G
 FILE(GLOB PRJ_STUB_IMPL_SRCS ${PRJ_SRC_COMMONAPI_PATH}/*Stub*.cpp)
 FILE(GLOB PROTOBUF_SRCS ${PRJ_SRC_PATH}/*.cc)
 set(PRJ_CLIENT_SRCS ${PRJ_SRC_PATH}/${PRJ_NAME_CLIENT}.cpp ${PRJ_PROXY_GEN_SRCS})
-set(PRJ_SERVICE_SRCS ${PRJ_SRC_PATH}/${PRJ_NAME_SERVICE}.cpp ${PRJ_SRC_PATH}/${PRJ_NAME}StubImpl.cpp ${PRJ_STUB_GEN_SRCS} ${PRJ_STUB_IMPL_SRCS} ${PROTOBUF_SRCS} 
+set(PRJ_SERVICE_SRCS ${PRJ_SRC_PATH}/${PRJ_NAME_SERVICE}.cpp ${PRJ_SRC_PATH}/${PRJ_NAME}ServiceRequestManager.cpp ${PRJ_SRC_PATH}/${PRJ_NAME}StubImpl.cpp ${PRJ_STUB_GEN_SRCS} ${PRJ_STUB_IMPL_SRCS} ${PROTOBUF_SRCS} 
 ${PRJ_SRC_PATH}/${PRJ_NAME_SERVICE}Handler.cpp)
 
 add_executable(${PRJ_NAME_CLIENT} ${PRJ_CLIENT_SRCS})
