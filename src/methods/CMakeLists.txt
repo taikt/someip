@@ -6,7 +6,7 @@ set (COMMONAPI_SOMEIP_DIR "/data001/tai2.tran/someip_stack/capicxx-someip-runtim
 set (VSOMEIP_DIR "/data001/tai2.tran/someip_stack/vsomeip")
 set (ASYNC_TIGER_DIR "/data001/tai2.tran/codefun/cpp/pattern/dispatcher_v2")
 
-set (LOCAL_LIB_DIR "/usr/local/lib")
+set (LOCAL_LIB_DIR "/usr/local/lib /usr/include/")
 
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread -std=c++0x -Wl,--as-needed -std=c++17")

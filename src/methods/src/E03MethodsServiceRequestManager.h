@@ -2,6 +2,7 @@
 #include "Dispatcher.h"
 #include "requestMsg.pb.h"
 #include "E03MethodsServiceHandler.h"
+using namespace kt;
 
 class RequestManager {
 public:

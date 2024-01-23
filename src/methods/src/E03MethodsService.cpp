@@ -26,13 +26,14 @@ int main() {
     std::string domain = "local";
     std::string instance = "commonapi.examples.Methods";
 
-    std::shared_ptr<Handler> myHandler_ = std::make_shared<E03MethodsServiceHandler>();
-    std::shared_ptr<Dispatcher> mExecutor = std::make_shared<Dispatcher>(myHandler_);
+    //std::shared_ptr<Handler> myHandler_ = std::make_shared<E03MethodsServiceHandler>();
+    //std::shared_ptr<Dispatcher> mExecutor = std::make_shared<Dispatcher>(myHandler_);
+    std::shared_ptr<Dispatcher> mExecutor = std::make_shared<Dispatcher>();
 
     std::shared_ptr<E03MethodsStubImpl> myService = std::make_shared<E03MethodsStubImpl>(mExecutor);
     
     //mExecutor->deliverTask([=]{std::cout<<"[taikt] hello main@@@@@@@@@@@@@@@@@@@@@@@@@\n";});
-
+    mExecutor->startTaskThreadPool();
 	
 	DEBUG_MSG();
     while (!runtime->registerService(domain, instance, myService, "service-sample")) {

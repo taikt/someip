@@ -5,6 +5,7 @@
 #include "Message.h"
 #include <v1/commonapi/examples/E03Methods.hpp>
 // #include "E03MethodsStubImpl.hpp"
+using namespace kt;
 
 using namespace v1_2::commonapi::examples;
 
